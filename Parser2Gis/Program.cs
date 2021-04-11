@@ -14,16 +14,65 @@ namespace Parser2Gis
 {
     class Program
     {
-        public static string body;
-
         public static IConfiguration AppConfiguration { get; set; }
 
         static void Main(string[] args)
         {
-            string result = RunAsync().GetAwaiter().GetResult();            
+            string result = RunAsync().GetAwaiter().GetResult();
+            string json = GetJson(result);
 
+            var reviews = GetReviews(json);
+
+            foreach (var item in reviews)
+            {
+                Console.WriteLine(item.Text);
+            }
+
+            Console.ReadKey();
+        }
+
+        /// <summary>
+        /// Get reviews items from json 
+        /// </summary>
+        /// <param name="json"></param>
+        /// <returns></returns>
+        private static List<Review> GetReviews(string json)
+        {
+            string response = JsonConvert.DeserializeObject<Request>(json).Data.ToString();
+            var reviewsRaw = JsonConvert.DeserializeObject<Data>(response).Review;
+            var reviewItems = ConvertObjectToArray(reviewsRaw);
+            
+            return reviewItems; 
+        }
+
+        /// <summary>
+        /// Convert object ot array
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        private static List<Review> ConvertObjectToArray(JObject obj)
+        {
+            List<Review> reviews = new List<Review>();
+
+            foreach (KeyValuePair<string, JToken> property in obj)
+            {                
+                var dataRaw = JsonConvert.DeserializeObject<Data>(property.Value.ToString()).DataRaw.ToString();
+                var review = JsonConvert.DeserializeObject<Review>(dataRaw);                
+                reviews.Add(review);
+            }          
+
+            return reviews;
+        }
+
+        /// <summary>
+        /// Get json from html 
+        /// </summary>
+        /// <param name="html"></param>
+        /// <returns></returns>
+        private static string GetJson(string html)
+        {
             var doc = new HtmlDocument();
-            doc.LoadHtml(result);
+            doc.LoadHtml(html);
             string json = doc.DocumentNode.Descendants("script")
                                         .ToList()
                                         .Where(n => n.InnerText.Contains("__customcfg"))
@@ -35,29 +84,15 @@ namespace Parser2Gis
             int last = json.LastIndexOf('}');
             int count = last - first + 1;
 
-            json = json.Substring(first, count); 
+            json = json.Substring(first, count);
             
-            string response = JsonConvert.DeserializeObject<Request>(json).Data.ToString();
-            var reviewsRaw = JsonConvert.DeserializeObject<Data>(response).Review;
-
-            List<string> reviews = new List<string>();           
-
-            foreach (KeyValuePair<string, JToken> property in reviewsRaw)
-            {
-                reviews.Add(property.Value.ToString());
-            }
-
-            var content = reviews.ToArray()[3].ToString();
-            var dataRaw = JsonConvert.DeserializeObject<Data>(content).DataRaw.ToString();
-
-            var review = JsonConvert.DeserializeObject<Review>(dataRaw);
-
-            Console.WriteLine(review.Text);           
-            Console.WriteLine(review.User.PhotoPreviewUrl.Photo1920);
-
-            Console.ReadKey();
+            return json;
         }
 
+        /// <summary>
+        /// Do request on the site 2gis.ru
+        /// </summary>
+        /// <returns></returns>
         private static async Task<string> RunAsync()
         {
             AuthConfig config = AuthConfig.ReadFromJsonFile("appsettings.json");
