@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReviewApi", "ReviewApi\ReviewApi.csproj", "{6DCEBA3C-6399-46DD-8255-71505878ADAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReviewApi", "ReviewApi\ReviewApi.csproj", "{6DCEBA3C-6399-46DD-8255-71505878ADAF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parser2Gis", "Parser2Gis\Parser2Gis.csproj", "{919AE320-2405-4D8A-972E-140A8D1E7BBF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{6DCEBA3C-6399-46DD-8255-71505878ADAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DCEBA3C-6399-46DD-8255-71505878ADAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DCEBA3C-6399-46DD-8255-71505878ADAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{919AE320-2405-4D8A-972E-140A8D1E7BBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{919AE320-2405-4D8A-972E-140A8D1E7BBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{919AE320-2405-4D8A-972E-140A8D1E7BBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{919AE320-2405-4D8A-972E-140A8D1E7BBF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
